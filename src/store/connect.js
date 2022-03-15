@@ -1,17 +1,15 @@
 
-import axios from "axios"
 import { URL_CONNECT } from "../constant/constant"
 
- export const callApi = async (method, pathName, data) => {
-    let result
-    await axios({
+export const callApi = (method, pathName, data) => {
+    return fetch(URL_CONNECT + pathName, {
         method,
-        url: URL_CONNECT + pathName,
-        data
-    }).then(res => {
-        result = res.data
-        return result
-        
-    })
-    return result
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data ? JSON.stringify(data) : null
+    }).then(res => res.json())
+        .then(data => {
+            return data
+        })
 }
