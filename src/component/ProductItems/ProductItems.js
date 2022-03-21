@@ -1,20 +1,33 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { URL_CONNECT } from "../../constant/constant";
 import { callApi } from "../../store/connect";
 
 function ProductItems() {
     const [products, setProducts] = useState([])
     const navigate = useNavigate();
 
-    useLayoutEffect(() => {
-        getData();
+    useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        fetch(URL_CONNECT + '/', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            signal
+        }).then(res => res.json())
+            .then(data => {
+                setProducts(data)
+            })
+            .catch(err => {
+
+            })
+        return () => {
+            controller.abort()
+        };
     }, []);
 
-    const getData = () => {
-        callApi("GET", "/", null).then((res) => {
-            setProducts(res)
-        });
-    }
     const handleEdit = (e) => {
         const id = e.target.dataset.index;
         navigate(`/product/${id}/edit`);

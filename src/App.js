@@ -9,12 +9,13 @@ function App() {
             <Menu />
             <div className="container">
                 <div className="row">
-                    {router.map((item, index) => (
-                        <Routes key={index}>
-                            <Route path={item.path} element={item.element}>
+                    <Routes>
+                        {router.map((item, index) => (
+                            <Route key={index} path={item.path} element={item.element}>
                             </Route>
-                        </Routes>
-                    ))}
+                        ))}
+                    </Routes>
+
                 </div>
             </div>
         </div>

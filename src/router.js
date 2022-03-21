@@ -6,25 +6,26 @@ import ActionProductsPage from './page/ActionProductsPage/ActionProductsPage'
 
 const router = [
     {
-        path:'/',
-        element: <HomePage/>
+        path: '/',
+        element: <HomePage />
     },
     {
-        path:'/products',
-        element: <ProductsPage/>
+        path: '/products',
+        element: <ProductsPage />
+    },
+
+    {
+        path: '/product/add',
+        element: <ActionProductsPage />
     },
     {
-        path:'',
-        element: <NotFoundPage/>
+        path: '/product/:id/edit',
+        element: <ActionProductsPage />
     },
     {
-        path:'/product/add',
-        element: <ActionProductsPage/>
-    },
-    {
-        path:'/product/:id/edit',
-        element: <ActionProductsPage/>
-    },
+        path: '*',
+        element: <NotFoundPage />
+    }
 ]
 
 export default router
