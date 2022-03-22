@@ -1,32 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { URL_CONNECT } from "../../constant/constant";
-import { callApi } from "../../store/connect";
+import { connect } from 'react-redux'
+import { getAllProductRequest, deleteProductRequest } from '../../action/action'
 
-function ProductItems() {
-    const [products, setProducts] = useState([])
+function ProductItems(props) {
+    const products = props.listProduct
     const navigate = useNavigate();
+    const getAllProduct = props.getAllProduct
 
     useEffect(() => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        fetch(URL_CONNECT + '/', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            signal
-        }).then(res => res.json())
-            .then(data => {
-                setProducts(data)
-            })
-            .catch(err => {
-
-            })
-        return () => {
-            controller.abort()
-        };
-    }, []);
+        getAllProduct()
+    }, [getAllProduct])
 
     const handleEdit = (e) => {
         const id = e.target.dataset.index;
@@ -37,10 +21,7 @@ function ProductItems() {
         const id = e.target.dataset.index;
         const confirm = window.confirm("Do you want to delete this product ?");
         if (confirm) {
-            callApi('DELETE', `/${id}`, null).then(res => {
-                let newProducts = products.filter(item => item.id !== res.id)
-                setProducts(newProducts)
-            })
+            props.deleteProduct(id)
         }
     };
 
@@ -78,4 +59,17 @@ function ProductItems() {
     );
 }
 
-export default ProductItems;
+const mapStateToProps = (state) => {
+    return {
+        listProduct: state.products
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getAllProduct: () => dispatch(getAllProductRequest()),
+        deleteProduct: (id) => dispatch(deleteProductRequest(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItems)

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { callApi } from "../../store/connect";
+import { connect } from "react-redux"
+import { addProductRequest, updateProductRequest, getProductUpdateRequest } from '../../action/action'
 
-function ActionProductsPage() {
+function ActionProductsPage(props) {
+    const product = props.product
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [amount, setAmount] = useState("");
@@ -17,9 +19,9 @@ function ActionProductsPage() {
         };
         e.preventDefault();
         if (params.id) {
-            callApi('put', `/${params.id}`, value)
+            props.updateProduct(params.id, value)
         } else {
-            callApi('post', '/', value)
+            props.addProduct(value)
         }
         navigate(-1);
     };
@@ -34,17 +36,21 @@ function ActionProductsPage() {
         }
     };
 
-    const getProductById = (id) => {
-        callApi("get", `/${params.id}`, null).then((response) => {
-            setName(response.name);
-            setAmount(response.amount);
-            setPrice(response.price);
-        });
-    };
+    // const getProductById = (id) => {
+    //     callApi("get", `/${params.id}`, null).then((response) => {
+    //         setName(response.name);
+    //         setAmount(response.amount);
+    //         setPrice(response.price);
+    //     });
+    // };
 
+    const showProductUpdate = (id) => {
+        props.getProductById(id)
+        console.log(product);
+    }
     useEffect(() => {
         if (params.id) {
-            getProductById(params.id);
+            showProductUpdate(params.id)
         }
     }, []);
 
@@ -84,10 +90,26 @@ function ActionProductsPage() {
                         onChange={handleInput}
                     />
                 </div>
-                <button className="btn btn-primary">Add Product</button>
+                <button className="btn btn-primary">
+                    {params.id ? 'Edit Product' : 'Add Product'}
+                </button>
             </form>
         </div>
     );
 }
 
-export default ActionProductsPage;
+const mapStateToProps = (state) => {
+    return {
+        product: state.itemProduct
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addProduct: (product) => dispatch(addProductRequest(product)),
+        updateProduct: (id, product) => dispatch(updateProductRequest(id, product)),
+        getProductById: (id) => dispatch(getProductUpdateRequest(id)),
+    }
+
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ActionProductsPage)
