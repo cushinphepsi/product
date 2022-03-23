@@ -1,0 +1,11 @@
+.search-container {
+  margin: 10px 0;
+  width: 60%;
+  display: flex;
+  select {
+    width: 180px;
+  }
+  button {
+    margin: 0 10px;
+  }
+}

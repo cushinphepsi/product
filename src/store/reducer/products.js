@@ -1,5 +1,5 @@
 
-import { ADD_PRODUCT, DELETE_PRODUCT, SHOW_PRODUCT, UPDATE_PRODUCT } from '../../constant/constant'
+import { ADD_PRODUCT, DELETE_PRODUCT, SHOW_PRODUCT, UPDATE_PRODUCT, SEARCH_PRODUCT } from '../../constant/constant'
 const initValue = []
 
 export const products = (state = initValue, action) => {
@@ -18,6 +18,8 @@ export const products = (state = initValue, action) => {
             let index = state.findIndex(item => item.id === product.id)
             state[index] = product
             return state
+        case SEARCH_PRODUCT:
+            return action.products
         default:
             return state
     }

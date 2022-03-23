@@ -6,15 +6,15 @@ import { getAllProductRequest, deleteProductRequest } from '../../action/action'
 function ProductItems(props) {
     // const products = props.listProduct
     const products = useSelector(state => state.products)
+    const sortBy = useSelector(state => state.sortProduct)
     const dispatch = useDispatch()
-
     const navigate = useNavigate();
     // const getAllProduct = props.getAllProduct
 
     useEffect(() => {
-        dispatch(getAllProductRequest())
+        dispatch(getAllProductRequest(sortBy))
         // getAllProduct()
-    }, [])
+    }, [sortBy])
 
     const handleEdit = (e) => {
         const id = e.target.dataset.index;
