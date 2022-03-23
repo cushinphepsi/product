@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { addProductRequest, updateProductRequest, getProductUpdateRequest } from '../../action/action'
 
 function ActionProductsPage(props) {
-    const product = props.product
+    // const product = props.product
+    let product = useSelector(state => state.itemProduct)
+    const dispatch = useDispatch()
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
     const [amount, setAmount] = useState("");
@@ -19,9 +21,11 @@ function ActionProductsPage(props) {
         };
         e.preventDefault();
         if (params.id) {
-            props.updateProduct(params.id, value)
+            dispatch(updateProductRequest(params.id, value))
+            // props.updateProduct(params.id, value)
         } else {
-            props.addProduct(value)
+            dispatch(addProductRequest(value))
+            // props.addProduct(value)
         }
         navigate(-1);
     };
@@ -36,23 +40,21 @@ function ActionProductsPage(props) {
         }
     };
 
-    // const getProductById = (id) => {
-    //     callApi("get", `/${params.id}`, null).then((response) => {
-    //         setName(response.name);
-    //         setAmount(response.amount);
-    //         setPrice(response.price);
-    //     });
-    // };
+    // const showProductUpdate = (id) => {
+    //     props.getProductById(id)
+    // }
 
-    const showProductUpdate = (id) => {
-        props.getProductById(id)
-        console.log(product);
-    }
     useEffect(() => {
         if (params.id) {
-            showProductUpdate(params.id)
+            dispatch(getProductUpdateRequest(params.id))
         }
     }, []);
+
+    useEffect(() => {
+        setName(product.name);
+        setAmount(product.amount);
+        setPrice(product.price);
+    }, [product]);
 
     return (
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -60,7 +62,7 @@ function ActionProductsPage(props) {
                 <div className="form-group">
                     <label>Name</label>
                     <input
-                        value={name}
+                        value={name || ''}
                         type="text"
                         name="name"
                         className="form-control"
@@ -72,7 +74,7 @@ function ActionProductsPage(props) {
                     <label>Price</label>
                     <input
                         type="text"
-                        value={price}
+                        value={price || ''}
                         name="price"
                         className="form-control"
                         placeholder="Input price product"
@@ -83,7 +85,7 @@ function ActionProductsPage(props) {
                     <label>Amount</label>
                     <input
                         type="text"
-                        value={amount}
+                        value={amount || ''}
                         name="amount"
                         className="form-control"
                         placeholder="Input amount product"
@@ -98,18 +100,18 @@ function ActionProductsPage(props) {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        product: state.itemProduct
-    }
-}
+// const mapStateToProps = (state) => {
+//     return {
+//         product: state.itemProduct
+//     }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addProduct: (product) => dispatch(addProductRequest(product)),
-        updateProduct: (id, product) => dispatch(updateProductRequest(id, product)),
-        getProductById: (id) => dispatch(getProductUpdateRequest(id)),
-    }
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         addProduct: (product) => dispatch(addProductRequest(product)),
+//         updateProduct: (id, product) => dispatch(updateProductRequest(id, product)),
+//         getProductById: (id) => dispatch(getProductUpdateRequest(id)),
+//     }
+// }
 
-}
-export default connect(mapStateToProps, mapDispatchToProps)(ActionProductsPage)
+export default ActionProductsPage

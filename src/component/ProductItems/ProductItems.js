@@ -1,16 +1,20 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAllProductRequest, deleteProductRequest } from '../../action/action'
 
 function ProductItems(props) {
-    const products = props.listProduct
+    // const products = props.listProduct
+    const products = useSelector(state => state.products)
+    const dispatch = useDispatch()
+
     const navigate = useNavigate();
-    const getAllProduct = props.getAllProduct
+    // const getAllProduct = props.getAllProduct
 
     useEffect(() => {
-        getAllProduct()
-    }, [getAllProduct])
+        dispatch(getAllProductRequest())
+        // getAllProduct()
+    }, [])
 
     const handleEdit = (e) => {
         const id = e.target.dataset.index;
@@ -21,7 +25,8 @@ function ProductItems(props) {
         const id = e.target.dataset.index;
         const confirm = window.confirm("Do you want to delete this product ?");
         if (confirm) {
-            props.deleteProduct(id)
+            dispatch(deleteProductRequest(id))
+            // props.deleteProduct(id)
         }
     };
 
@@ -59,17 +64,17 @@ function ProductItems(props) {
     );
 }
 
-const mapStateToProps = (state) => {
-    return {
-        listProduct: state.products
-    }
-}
+// const mapStateToProps = (state) => {
+//     return {
+//         listProduct: state.products
+//     }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getAllProduct: () => dispatch(getAllProductRequest()),
-        deleteProduct: (id) => dispatch(deleteProductRequest(id))
-    }
-}
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//         getAllProduct: () => dispatch(getAllProductRequest()),
+//         deleteProduct: (id) => dispatch(deleteProductRequest(id))
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductItems)
+export default ProductItems

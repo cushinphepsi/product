@@ -1,5 +1,5 @@
 
-import { ADD_PRODUCT, DELETE_PRODUCT, SHOW_PRODUCT } from '../../constant/constant'
+import { ADD_PRODUCT, DELETE_PRODUCT, SHOW_PRODUCT, UPDATE_PRODUCT } from '../../constant/constant'
 const initValue = []
 
 export const products = (state = initValue, action) => {
@@ -13,6 +13,11 @@ export const products = (state = initValue, action) => {
         case ADD_PRODUCT:
             state.push(action.product)
             return [...state]
+        case UPDATE_PRODUCT:
+            const product = action.product
+            let index = state.findIndex(item => item.id === product.id)
+            state[index] = product
+            return state
         default:
             return state
     }

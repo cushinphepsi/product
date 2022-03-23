@@ -1,4 +1,4 @@
-import { ADD_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT, SHOW_PRODUCT } from '../constant/constant'
+import { ADD_PRODUCT, DELETE_PRODUCT, UPDATE_PRODUCT, SHOW_PRODUCT, GET_PRODUCT_UPDATE } from '../constant/constant'
 import { callApi } from '../store/connect'
 
 export const getAllProductRequest = () => {
@@ -33,8 +33,7 @@ export const getProductUpdateRequest = (id) => {
     return (dispatch) => {
         callApi('GET', `/${id}`, null)
             .then(product => {
-                console.log('ttttttt');
-                dispatch({ type: UPDATE_PRODUCT, product })
+                dispatch({ type: GET_PRODUCT_UPDATE, product })
             })
     }
 }
