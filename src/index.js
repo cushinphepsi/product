@@ -5,11 +5,23 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux'
-import { createStore, applyMiddleware } from 'redux'
-import rootReducer from './store/reducer/index'
-import thunk from 'redux-thunk'
+// import { createStore, applyMiddleware } from 'redux'
+// import rootReducer from './store/reducer/index'
+// import thunk from 'redux-thunk'
+import { configureStore } from '@reduxjs/toolkit';
+import products from './store/reducer/productSlice';
+import itemProduct from './store/reducer/itemProductSlice';
+import filterProduct from './store/reducer/filterProductSlice';
 
-const store = createStore(rootReducer, applyMiddleware(thunk))
+
+// const store = createStore(rootReducer, applyMiddleware(thunk))
+const store = configureStore({
+    reducer: {
+        products,
+        itemProduct,
+        filterProduct
+    }
+})
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>

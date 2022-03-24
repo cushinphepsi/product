@@ -1,21 +1,19 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllProductRequest, deleteProductRequest } from '../../action/action'
-import { productSort, sortSelector } from "../../store/selector";
+import { productView } from "../../store/selector";
+import { deleteProductRequest, getAllProductRequest } from "../../store/reducer/productSlice";
 
-function ProductItems(props) {
+function ProductItems() {
     // const products = props.listProduct
-    const products = useSelector(productSort)
-    const sortBy = useSelector(sortSelector)
+    const products = useSelector(productView)
     const dispatch = useDispatch()
     const navigate = useNavigate();
     // const getAllProduct = props.getAllProduct
 
     useEffect(() => {
-        dispatch(getAllProductRequest(sortBy))
-        // getAllProduct()
-    }, [sortBy])
+        dispatch(getAllProductRequest())
+    }, [dispatch])
 
     const handleEdit = (e) => {
         const id = e.target.dataset.index;

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"
-import { addProductRequest, updateProductRequest, getProductUpdateRequest } from '../../action/action'
 import { itemProductSelector } from "../../store/selector";
+import { addProductRequest } from "../../store/reducer/productSlice";
+import { getProductUpdateRequest, updateProductRequest } from "../../store/reducer/itemProductSlice";
+import { sortProduct } from "../../store/reducer/filterProductSlice";
 
 function ActionProductsPage(props) {
     // const product = props.product
@@ -22,12 +24,17 @@ function ActionProductsPage(props) {
         };
         e.preventDefault();
         if (params.id) {
-            dispatch(updateProductRequest(params.id, value))
+            const valueUpdate = {
+                id: params.id,
+                value
+            }
+            dispatch(updateProductRequest(valueUpdate))
             // props.updateProduct(params.id, value)
         } else {
             dispatch(addProductRequest(value))
             // props.addProduct(value)
         }
+        dispatch(sortProduct(''))
         navigate(-1);
     };
 
@@ -41,15 +48,11 @@ function ActionProductsPage(props) {
         }
     };
 
-    // const showProductUpdate = (id) => {
-    //     props.getProductById(id)
-    // }
-
     useEffect(() => {
         if (params.id) {
             dispatch(getProductUpdateRequest(params.id))
         }
-    }, []);
+    }, [dispatch, params.id]);
 
     useEffect(() => {
         setName(product.name);

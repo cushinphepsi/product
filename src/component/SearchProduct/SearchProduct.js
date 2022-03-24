@@ -1,17 +1,14 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import './SearchProduct.scss';
-import { searchProductRequest, sortProduct } from '../../action/action'
+import { searchProduct, sortProduct } from '../../store/reducer/filterProductSlice';
 
 function SearchProduct() {
 
     const [inputSearch, setInputSearch] = useState('')
-    const sortBy = useSelector(state => state.sortProduct)
     const dispatch = useDispatch()
-
     const handleSearch = () => {
-        dispatch(searchProductRequest(inputSearch))
-        setInputSearch('')
+        dispatch(searchProduct(inputSearch))
     }
 
     const handleSort = (e) => {
@@ -39,7 +36,7 @@ function SearchProduct() {
             <select
                 className="form-control"
                 onChange={handleSort}
-                defaultValue={sortBy ? sortBy : ''}
+                defaultValue={""}
             >
                 <option value="" disabled hidden>Choose a sort type</option>
                 <option value="name">Sort By Name</option>
