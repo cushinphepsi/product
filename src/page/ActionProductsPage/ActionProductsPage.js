@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux"
 import { addProductRequest, updateProductRequest, getProductUpdateRequest } from '../../action/action'
+import { itemProductSelector } from "../../store/selector";
 
 function ActionProductsPage(props) {
     // const product = props.product
-    let product = useSelector(state => state.itemProduct)
+    let product = useSelector(itemProductSelector)
     const dispatch = useDispatch()
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");

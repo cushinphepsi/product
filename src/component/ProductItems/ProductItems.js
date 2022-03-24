@@ -2,11 +2,12 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllProductRequest, deleteProductRequest } from '../../action/action'
+import { productSort, sortSelector } from "../../store/selector";
 
 function ProductItems(props) {
     // const products = props.listProduct
-    const products = useSelector(state => state.products)
-    const sortBy = useSelector(state => state.sortProduct)
+    const products = useSelector(productSort)
+    const sortBy = useSelector(sortSelector)
     const dispatch = useDispatch()
     const navigate = useNavigate();
     // const getAllProduct = props.getAllProduct
@@ -32,8 +33,8 @@ function ProductItems(props) {
 
     return (
         <>
-            {products && products.map((item) => (
-                <tr key={item.id}>
+            {products && products.map((item, index) => (
+                <tr key={index}>
                     <td>{item.id}</td>
                     <td>{item.id}</td>
                     <td>{item.name}</td>
