@@ -26,29 +26,26 @@
 // }
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { callApi } from '../connect'
+import productsApi from '../../api/productsApi'
 
 export const getAllProductRequest = createAsyncThunk(
     'products/getAllProduct',
     async () => {
-        return callApi('GET', '/', null)
-            .then(products => products)
+        return await productsApi.getAll()
     }
 )
 
 export const addProductRequest = createAsyncThunk(
     'products/addProduct',
     async (data, dispatch) => {
-        return callApi('post', '/', data)
-            .then(product => product)
+        return await productsApi.addProduct(data)
     }
 )
 
 export const deleteProductRequest = createAsyncThunk(
     'products/deleteProduct',
     async (id, dispatch) => {
-        return await callApi('DELETE', `/${id}`, null)
-            .then(product => product)
+        return await productsApi.deleteProduct(id)
     }
 )
 

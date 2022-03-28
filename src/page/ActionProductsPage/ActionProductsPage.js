@@ -16,7 +16,7 @@ function ActionProductsPage(props) {
     const navigate = useNavigate();
     let params = useParams();
 
-    const handleAddProduct = (e) => {
+    const handleAddProduct = async (e) => {
         const value = {
             name,
             price,
@@ -28,7 +28,7 @@ function ActionProductsPage(props) {
                 id: params.id,
                 value
             }
-            dispatch(updateProductRequest(valueUpdate))
+            await dispatch(updateProductRequest(valueUpdate))
             // props.updateProduct(params.id, value)
         } else {
             dispatch(addProductRequest(value))
@@ -55,10 +55,12 @@ function ActionProductsPage(props) {
     }, [dispatch, params.id]);
 
     useEffect(() => {
-        setName(product.name);
-        setAmount(product.amount);
-        setPrice(product.price);
-    }, [product]);
+        if (params.id) {
+            setName(product.name);
+            setAmount(product.amount);
+            setPrice(product.price);
+        }
+    }, [product, params.id]);
 
     return (
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
